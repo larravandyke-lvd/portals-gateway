@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Van Dyke Portals</title>
+<title>Van Dyke Portals Homepage</title>
 <meta name="theme-color" content="#12141f">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="VD Portals">
+<meta name="apple-mobile-web-app-title" content="VD Home">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='4' y1='2' x2='60' y2='62' gradientUnits='userSpaceOnUse'><stop offset='0' stop-color='%23f6e3b4'/><stop offset='.5' stop-color='%23c9a24b'/><stop offset='1' stop-color='%237a5a35'/></linearGradient></defs><rect x='2' y='2' width='60' height='60' rx='18' fill='url(%23g)'/><rect x='6.5' y='6.5' width='51' height='51' rx='14' fill='none' stroke='%231b1207' stroke-opacity='.28' stroke-width='1'/><text x='32' y='45' font-family='Georgia,serif' font-style='italic' font-weight='700' font-size='33' fill='%231b1207' text-anchor='middle'>V</text><path d='M48.5 12.5 L50 16.5 L54 18 L50 19.5 L48.5 23.5 L47 19.5 L43 18 L47 16.5 Z' fill='%23fff6e2'/><circle cx='14' cy='50' r='1.6' fill='%23fff6e2' fill-opacity='.85'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -180,7 +180,7 @@ body.locked #lock{display:flex}
 <div id="lock">
   <div class="lock-box">
     <div class="lock-icon">🔒</div>
-    <h2>Van Dyke Portals</h2>
+    <h2>Van Dyke Portals Homepage</h2>
     <p>Enter the shared PIN</p>
     <div class="lock-dots" id="lockDots">
       <div class="lock-dot"></div><div class="lock-dot"></div><div class="lock-dot"></div><div class="lock-dot"></div>
@@ -207,7 +207,7 @@ body.locked #lock{display:flex}
   <div class="hdr">
     <div class="seal"><div class="seal-mono">V</div></div>
     <div class="hdr-eyebrow">Van Dyke</div>
-    <h1>Portals</h1>
+    <h1>Portals Homepage</h1>
     <p>One gateway, everywhere you keep things</p>
     <div class="hdr-rule"></div>
   </div>
@@ -315,10 +315,10 @@ else { document.body.classList.add('locked'); }
 // told me the real deployed URLs. Tap a tile to set/open it.
 // ══════════════════════════════════════════════════════════
 var PORTALS = [
-  {id:'travel', icon:'🧳', name:'Travel', eyebrow:'Trip Dashboard', desc:'Vegas, Alaska & the Danube — itineraries, packing, people, points.'},
+  {id:'travel', icon:'✈️', name:'Travel', eyebrow:'Trip Dashboard', desc:'Vegas, Alaska & the Danube — itineraries, packing, people, points.'},
   {id:'points', icon:'💳', name:'Points', eyebrow:'Rewards Portal', desc:'Cards, balances, specials, redemption strategy.'},
   {id:'estate', icon:'🏛️', name:'Estate', eyebrow:'Estate Portal', desc:'Estate planning & documents.'},
-  {id:'ai', icon:'🤖', name:'AI', eyebrow:'AI Portal', desc:'Your AI workspace.'}
+  {id:'ai', icon:'📈', name:'AI', eyebrow:'AI Portal', desc:'Your AI workspace.'}
 ];
 var DEFAULT_LINKS = {
   travel: 'https://vandyke-travel-app.vercel.app',
