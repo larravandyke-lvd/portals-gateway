@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Van Dyke Portals</title>
+<meta name="theme-color" content="#12141f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="VD Portals">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='4' y1='2' x2='60' y2='62' gradientUnits='userSpaceOnUse'><stop offset='0' stop-color='%23f6e3b4'/><stop offset='.5' stop-color='%23c9a24b'/><stop offset='1' stop-color='%237a5a35'/></linearGradient></defs><rect x='2' y='2' width='60' height='60' rx='18' fill='url(%23g)'/><rect x='6.5' y='6.5' width='51' height='51' rx='14' fill='none' stroke='%231b1207' stroke-opacity='.28' stroke-width='1'/><text x='32' y='45' font-family='Georgia,serif' font-style='italic' font-weight='700' font-size='33' fill='%231b1207' text-anchor='middle'>V</text><path d='M48.5 12.5 L50 16.5 L54 18 L50 19.5 L48.5 23.5 L47 19.5 L43 18 L47 16.5 Z' fill='%23fff6e2'/><circle cx='14' cy='50' r='1.6' fill='%23fff6e2' fill-opacity='.85'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#12141f; --panel:#1b1e2e; --panel2:#20243a; --line:#2c3049;
+  --ink:#ece9e2; --ink-dim:#a6a9bd; --ink-faint:#6c7089;
+  --gold:#c9a24b; --gold-soft:rgba(201,162,75,.14);
+  --teal:#2ba89a; --teal-soft:rgba(43,168,154,.14);
+  --rose:#b76e79; --rose-soft:rgba(183,110,121,.14);
+  --azure:#4c7fd1; --azure-soft:rgba(76,127,209,.14);
+  --green:#34a574; --amber:#e0a93e; --red:#d9614f;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(ellipse 900px 500px at 50% -10%, rgba(201,162,75,.10), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0px, rgba(255,255,255,.018) 1px, transparent 1px, transparent 26px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.014) 0px, rgba(255,255,255,.014) 1px, transparent 1px, transparent 26px);
+  color:var(--ink);font-family:Inter,-apple-system,sans-serif;min-height:100vh}
+.app{max-width:640px;margin:0 auto;padding:18px 16px 48px;position:relative;z-index:1}
+h1,h2,.serif{font-family:Fraunces,Georgia,serif}
+::selection{background:var(--gold-soft)}
+a{color:inherit;text-decoration:none}
+
+/* ── ARTISTIC BACKDROP · orrery of portals ──
+   One ring per portal, slowly turning around the shared seal —
+   points (gold), travel (teal), AI (azure), estate (rose). */
+#backdrop{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#backdrop svg{width:min(1000px,165vw);height:min(1000px,165vw);opacity:.9}
+.orb-ring{fill:none;stroke-width:1}
+.orb-tick{stroke-width:1}
+.orb-group{transform-origin:400px 400px}
+.orb-spin-1{animation:orbSpin 85s linear infinite}
+.orb-spin-2{animation:orbSpinRev 130s linear infinite}
+.orb-spin-3{animation:orbSpin 175s linear infinite}
+.orb-spin-4{animation:orbSpinRev 235s linear infinite}
+@keyframes orbSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes orbSpinRev{from{transform:rotate(360deg)}to{transform:rotate(0deg)}}
+@media (prefers-reduced-motion: reduce){
+  .orb-spin-1,.orb-spin-2,.orb-spin-3,.orb-spin-4{animation:none}
+}
+.star{fill:var(--gold);opacity:.5}
+
+/* ── LOCK SCREEN ── */
+body.locked .app{display:none}
+#lock{position:fixed;inset:0;background:rgba(18,20,31,.82);z-index:999;display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(2px)}
+body.locked #lock{display:flex}
+.lock-box{width:100%;max-width:300px;text-align:center}
+.lock-icon{font-size:30px;margin-bottom:10px}
+.lock-box h2{font-size:20px;font-weight:600;margin-bottom:4px}
+.lock-box p{font-size:12px;color:var(--ink-dim);margin-bottom:22px}
+.lock-dots{display:flex;gap:10px;justify-content:center;margin-bottom:22px}
+.lock-dot{width:13px;height:13px;border-radius:50%;border:1.5px solid var(--line);background:transparent;transition:all .1s}
+.lock-dot.filled{background:var(--gold);border-color:var(--gold)}
+.lock-dot.err{background:var(--red);border-color:var(--red)}
+.lock-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.lock-key{background:var(--panel2);border:1px solid var(--line);color:var(--ink);font-size:18px;font-weight:600;padding:16px 0;border-radius:14px;cursor:pointer;font-family:Inter,sans-serif}
+.lock-key:active{background:var(--gold-soft);border-color:var(--gold)}
+.lock-key.wide{font-size:12px;color:var(--ink-dim)}
+.lock-err{font-size:12px;color:var(--red);margin-top:14px;min-height:16px}
+
+/* ── HEADER ── */
+.hdr{text-align:center;padding:14px 0 24px}
+.seal{width:56px;height:56px;border-radius:50%;margin:0 auto 12px;position:relative;background:radial-gradient(circle at 35% 30%,#f3e2b3,#c9a24b 45%,#8a6a3f 85%);box-shadow:0 4px 16px rgba(201,162,75,.35), inset 0 0 0 1px rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center}
+.seal::before{content:'';position:absolute;inset:4px;border-radius:50%;border:1px solid rgba(18,20,31,.35)}
+.seal-mono{font-family:Fraunces,serif;font-weight:700;font-size:16px;color:#1b1207;letter-spacing:-.5px}
+.hdr-eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px}
+.hdr h1{font-size:27px;font-weight:600;letter-spacing:-.3px}
+.hdr p{font-size:12px;color:var(--ink-dim);margin-top:6px;font-style:italic}
+.hdr-rule{width:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px auto 0}
+
+/* ── PORTAL TILES ── */
+.portals{display:flex;flex-direction:column;gap:14px;margin-top:6px}
+.portal{position:relative;border-radius:20px;padding:20px;border:1px solid var(--line);background:var(--panel);overflow:hidden;cursor:pointer;transition:transform .15s,border-color .15s}
+.portal:active{transform:scale(.985)}
+.portal-glow{position:absolute;inset:0;opacity:.5;pointer-events:none}
+.portal-row{display:flex;align-items:center;gap:16px;position:relative}
+.portal-icon{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.portal-body{flex:1;min-width:0}
+.portal-eyebrow{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:2px}
+.portal-name{font-family:Fraunces,serif;font-size:18px;font-weight:600}
+.portal-desc{font-size:12px;color:var(--ink-dim);margin-top:3px;line-height:1.4}
+.portal-arrow{font-size:20px;color:var(--ink-faint);flex-shrink:0}
+.portal-edit{position:absolute;top:14px;right:14px;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--ink-dim);cursor:pointer;z-index:2}
+.portal-unset{font-size:10.5px;color:var(--amber);margin-top:6px;font-weight:600}
+
+.portal.travel .portal-icon{background:var(--teal-soft);color:var(--teal)}
+.portal.travel .portal-eyebrow{color:var(--teal)}
+.portal.points .portal-icon{background:var(--gold-soft);color:var(--gold)}
+.portal.points .portal-eyebrow{color:var(--gold)}
+.portal.estate .portal-icon{background:var(--rose-soft);color:var(--rose)}
+.portal.estate .portal-eyebrow{color:var(--rose)}
+.portal.ai .portal-icon{background:var(--azure-soft);color:var(--azure)}
+.portal.ai .portal-eyebrow{color:var(--azure)}
+
+.footnote{text-align:center;font-size:11px;color:var(--ink-faint);margin-top:26px;line-height:1.6}
+.footnote span{text-decoration:underline;cursor:pointer;color:var(--ink-dim)}
+
+/* ── EDIT MODAL ── */
+#editOverlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:900;display:none;align-items:flex-end;justify-content:center}
+#editOverlay.open{display:flex}
+.edit-sheet{width:100%;max-width:640px;background:var(--panel);border-radius:20px 20px 0 0;padding:20px;border-top:1px solid var(--line)}
+.edit-sheet h3{font-family:Fraunces,serif;font-size:17px;margin-bottom:4px}
+.edit-sheet p{font-size:11.5px;color:var(--ink-dim);margin-bottom:14px}
+.edit-sheet input{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:12px 14px;border-radius:12px;font-size:13.5px;margin-bottom:12px}
+.edit-actions{display:flex;gap:8px}
+.edit-actions button{flex:1;padding:12px 0;border-radius:12px;font-size:13.5px;font-weight:700;border:1px solid var(--line);background:var(--panel2);color:var(--ink);cursor:pointer;font-family:Inter,sans-serif}
+.edit-actions button.primary{background:var(--gold);border-color:var(--gold);color:#1b1207}
+</style>
+</head>
+<body class="locked">
+
+<div id="backdrop" aria-hidden="true">
+<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="vignette" cx="50%" cy="42%" r="60%">
+      <stop offset="0%" stop-color="#c9a24b" stop-opacity=".16"/>
+      <stop offset="100%" stop-color="#c9a24b" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-200%" y="-200%" width="500%" height="500%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <circle cx="400" cy="400" r="380" fill="url(#vignette)"/>
+
+  <!-- static outer compass ring with ticks -->
+  <circle class="orb-ring" cx="400" cy="400" r="372" stroke="#c9a24b" stroke-opacity=".4" stroke-width="1.2"/>
+  <g stroke="#c9a24b" stroke-opacity=".55" stroke-width="1.2">
+    <g id="ticks"></g>
+  </g>
+
+  <!-- star scatter -->
+  <g>
+    <circle class="star" cx="120" cy="90" r="1.8"/><circle class="star" cx="640" cy="70" r="1.4"/>
+    <circle class="star" cx="60" cy="300" r="1.6"/><circle class="star" cx="730" cy="260" r="1.8"/>
+    <circle class="star" cx="90" cy="560" r="1.4"/><circle class="star" cx="700" cy="600" r="1.7"/>
+    <circle class="star" cx="200" cy="720" r="1.6"/><circle class="star" cx="560" cy="740" r="1.4"/>
+    <circle class="star" cx="30" cy="440" r="1.7"/><circle class="star" cx="770" cy="440" r="1.6"/>
+    <circle class="star" cx="400" cy="20" r="1.6"/><circle class="star" cx="400" cy="780" r="1.4"/>
+    <circle class="star" cx="250" cy="150" r="1.3"/><circle class="star" cx="540" cy="160" r="1.3"/>
+    <circle class="star" cx="160" cy="650" r="1.3"/><circle class="star" cx="620" cy="670" r="1.3"/>
+  </g>
+
+  <!-- orbit rings — one per portal -->
+  <g class="orb-group orb-spin-1">
+    <circle class="orb-ring" cx="400" cy="400" r="150" stroke="#c9a24b" stroke-opacity=".65" stroke-width="1.4" stroke-dasharray="1 7"/>
+    <circle cx="550" cy="400" r="7" fill="#c9a24b" filter="url(#glow)"/>
+    <circle cx="550" cy="400" r="15" fill="none" stroke="#c9a24b" stroke-opacity=".7"/>
+  </g>
+  <g class="orb-group orb-spin-2">
+    <circle class="orb-ring" cx="400" cy="400" r="210" stroke="#2ba89a" stroke-opacity=".6" stroke-width="1.4" stroke-dasharray="1 7"/>
+    <circle cx="610" cy="400" r="7" fill="#2ba89a" filter="url(#glow)"/>
+    <circle cx="610" cy="400" r="15" fill="none" stroke="#2ba89a" stroke-opacity=".7"/>
+  </g>
+  <g class="orb-group orb-spin-3">
+    <circle class="orb-ring" cx="400" cy="400" r="270" stroke="#4c7fd1" stroke-opacity=".55" stroke-width="1.4" stroke-dasharray="1 7"/>
+    <circle cx="670" cy="400" r="7" fill="#4c7fd1" filter="url(#glow)"/>
+    <circle cx="670" cy="400" r="15" fill="none" stroke="#4c7fd1" stroke-opacity=".7"/>
+  </g>
+  <g class="orb-group orb-spin-4">
+    <circle class="orb-ring" cx="400" cy="400" r="330" stroke="#b76e79" stroke-opacity=".5" stroke-width="1.4" stroke-dasharray="1 7"/>
+    <circle cx="730" cy="400" r="7" fill="#b76e79" filter="url(#glow)"/>
+    <circle cx="730" cy="400" r="15" fill="none" stroke="#b76e79" stroke-opacity=".7"/>
+  </g>
+</svg>
+</div>
+
+<div id="lock">
+  <div class="lock-box">
+    <div class="lock-icon">🔒</div>
+    <h2>Van Dyke Portals</h2>
+    <p>Enter the shared PIN</p>
+    <div class="lock-dots" id="lockDots">
+      <div class="lock-dot"></div><div class="lock-dot"></div><div class="lock-dot"></div><div class="lock-dot"></div>
+    </div>
+    <div class="lock-pad">
+      <button class="lock-key" onclick="lockPress('1')">1</button>
+      <button class="lock-key" onclick="lockPress('2')">2</button>
+      <button class="lock-key" onclick="lockPress('3')">3</button>
+      <button class="lock-key" onclick="lockPress('4')">4</button>
+      <button class="lock-key" onclick="lockPress('5')">5</button>
+      <button class="lock-key" onclick="lockPress('6')">6</button>
+      <button class="lock-key" onclick="lockPress('7')">7</button>
+      <button class="lock-key" onclick="lockPress('8')">8</button>
+      <button class="lock-key" onclick="lockPress('9')">9</button>
+      <button class="lock-key wide" onclick="lockClear()">clear</button>
+      <button class="lock-key" onclick="lockPress('0')">0</button>
+      <button class="lock-key wide" onclick="lockBack()">⌫</button>
+    </div>
+    <div class="lock-err" id="lockErr"></div>
+  </div>
+</div>
+
+<div class="app">
+  <div class="hdr">
+    <div class="seal"><div class="seal-mono">V</div></div>
+    <div class="hdr-eyebrow">Van Dyke</div>
+    <h1>Portals</h1>
+    <p>One gateway, everywhere you keep things</p>
+    <div class="hdr-rule"></div>
+  </div>
+
+  <div class="portals" id="portalList"></div>
+
+  <div class="footnote">Shared by Larra &amp; Eric · same PIN unlocks this on any device<br><span onclick="promptChangePin()">Change PIN</span> · <span onclick="lockNow()">Lock now</span></div>
+</div>
+
+<div id="editOverlay">
+  <div class="edit-sheet">
+    <h3 id="editTitle">Set link</h3>
+    <p id="editSub">Paste the deployed URL for this portal.</p>
+    <input id="editUrl" placeholder="https://…" autocapitalize="off" autocorrect="off" spellcheck="false">
+    <div class="edit-actions">
+      <button onclick="closeEdit()">Cancel</button>
+      <button class="primary" onclick="saveEdit()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── draw the 24 compass ticks on the backdrop ring ──
+(function(){
+  var g = document.getElementById('ticks');
+  if(!g) return;
+  var cx=400, cy=400, rOuter=372, rInner=360;
+  var ns = 'http://www.w3.org/2000/svg';
+  for(var i=0;i<24;i++){
+    var a = (i/24) * Math.PI * 2;
+    var x1 = cx + rOuter*Math.cos(a), y1 = cy + rOuter*Math.sin(a);
+    var x2 = cx + rInner*Math.cos(a), y2 = cy + rInner*Math.sin(a);
+    var line = document.createElementNS(ns,'line');
+    line.setAttribute('x1',x1); line.setAttribute('y1',y1);
+    line.setAttribute('x2',x2); line.setAttribute('y2',y2);
+    g.appendChild(line);
+  }
+})();
+</script>
+<script>
+// ══════════════════════════════════════════════════════════
+// PIN LOCK — same pattern as the Points Portal.
+// Default PIN is 2727 — tap "Change PIN" below to set your own
+// shared code once (both of you then use the new one).
+// ══════════════════════════════════════════════════════════
+var PIN_HASH = localStorage.getItem('vdgw_pin_hash') || '6195df46a1ee6b6984140dc3c3e6d772765010745d6c3f1ddd736ddbbd564cca'; // default: 2727
+var lockEntry = '';
+async function sha256(str){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function renderLockDots(){
+  const dots = document.querySelectorAll('.lock-dot');
+  dots.forEach((d,i)=> d.className = 'lock-dot' + (i < lockEntry.length ? ' filled' : ''));
+}
+function lockPress(digit){
+  if(lockEntry.length >= 4) return;
+  lockEntry += digit;
+  renderLockDots();
+  if(lockEntry.length === 4) checkPin();
+}
+function lockClear(){ lockEntry=''; document.getElementById('lockErr').textContent=''; renderLockDots(); }
+function lockBack(){ lockEntry = lockEntry.slice(0,-1); renderLockDots(); }
+async function checkPin(){
+  const hash = await sha256(lockEntry);
+  if(hash === PIN_HASH){
+    localStorage.setItem('vdgw_unlocked','1');
+    unlockApp();
+  } else {
+    document.getElementById('lockErr').textContent = 'Wrong PIN — try again';
+    document.querySelectorAll('.lock-dot').forEach(d=>d.classList.add('err'));
+    setTimeout(()=>{ lockEntry=''; renderLockDots(); document.querySelectorAll('.lock-dot').forEach(d=>d.classList.remove('err')); }, 350);
+  }
+}
+function unlockApp(){
+  document.getElementById('lock').style.display='none';
+  document.body.classList.remove('locked');
+}
+function lockNow(){
+  localStorage.removeItem('vdgw_unlocked');
+  lockEntry=''; renderLockDots();
+  document.getElementById('lock').style.display='flex';
+  document.body.classList.add('locked');
+}
+async function promptChangePin(){
+  var p1 = prompt('Set a new 4-digit shared PIN (both of you will use this one):');
+  if(!p1) return;
+  if(!/^\d{4}$/.test(p1)){ alert('PIN must be exactly 4 digits.'); return; }
+  var p2 = prompt('Confirm the new PIN:');
+  if(p1 !== p2){ alert('PINs did not match — nothing changed.'); return; }
+  var hash = await sha256(p1);
+  localStorage.setItem('vdgw_pin_hash', hash);
+  PIN_HASH = hash;
+  alert('PIN updated on this device. Set the same PIN on the other device so you both can get in.');
+}
+document.addEventListener('keydown', e=>{
+  if(document.getElementById('lock').style.display==='none') return;
+  if(e.key>='0' && e.key<='9') lockPress(e.key);
+  if(e.key==='Backspace') lockBack();
+});
+if(localStorage.getItem('vdgw_unlocked')==='1'){ unlockApp(); }
+else { document.body.classList.add('locked'); }
+
+// ══════════════════════════════════════════════════════════
+// PORTAL LINKS — stored locally so this works before you've
+// told me the real deployed URLs. Tap a tile to set/open it.
+// ══════════════════════════════════════════════════════════
+var PORTALS = [
+  {id:'travel', icon:'🧳', name:'Travel', eyebrow:'Trip Dashboard', desc:'Vegas, Alaska & the Danube — itineraries, packing, people, points.'},
+  {id:'points', icon:'💳', name:'Points', eyebrow:'Rewards Portal', desc:'Cards, balances, specials, redemption strategy.'},
+  {id:'estate', icon:'🏛️', name:'Estate', eyebrow:'Estate Portal', desc:'Estate planning & documents.'},
+  {id:'ai', icon:'🤖', name:'AI', eyebrow:'AI Portal', desc:'Your AI workspace.'}
+];
+var DEFAULT_LINKS = {
+  travel: 'https://vandyke-travel-app.vercel.app',
+  points: 'https://van-dyke-points.vercel.app',
+  ai: 'https://ai-stocks-dashboard-sage.vercel.app',
+  estate: 'https://estate-dashboard-mu.vercel.app'
+};
+function getLinks(){
+  var stored = {};
+  try{ stored = JSON.parse(localStorage.getItem('vdgw_links')||'{}'); }catch(e){}
+  return Object.assign({}, DEFAULT_LINKS, stored);
+}
+function saveLinks(l){ localStorage.setItem('vdgw_links', JSON.stringify(l)); }
+var editingId = null;
+function renderPortals(){
+  var links = getLinks();
+  var wrap = document.getElementById('portalList');
+  wrap.innerHTML = PORTALS.map(function(p){
+    var url = links[p.id] || '';
+    return '<div class="portal ' + p.id + '" onclick="tapPortal(\'' + p.id + '\')">'
+      + '<div class="portal-edit" onclick="event.stopPropagation();openEdit(\'' + p.id + '\')">✎</div>'
+      + '<div class="portal-row">'
+      + '<div class="portal-icon">' + p.icon + '</div>'
+      + '<div class="portal-body">'
+      + '<div class="portal-eyebrow">' + p.eyebrow + '</div>'
+      + '<div class="portal-name">' + p.name + '</div>'
+      + '<div class="portal-desc">' + p.desc + '</div>'
+      + (url ? '' : '<div class="portal-unset">Not linked yet — tap to set the URL</div>')
+      + '</div>'
+      + (url ? '<div class="portal-arrow">→</div>' : '')
+      + '</div></div>';
+  }).join('');
+}
+function tapPortal(id){
+  var links = getLinks();
+  var url = links[id];
+  if(url){ window.location.href = url; }
+  else { openEdit(id); }
+}
+function openEdit(id){
+  editingId = id;
+  var p = PORTALS.find(function(x){ return x.id === id; });
+  var links = getLinks();
+  document.getElementById('editTitle').textContent = 'Set link — ' + p.name;
+  document.getElementById('editSub').textContent = 'Paste the deployed URL for the ' + p.name + ' portal.';
+  document.getElementById('editUrl').value = links[id] || '';
+  document.getElementById('editOverlay').classList.add('open');
+}
+function closeEdit(){
+  document.getElementById('editOverlay').classList.remove('open');
+  editingId = null;
+}
+function saveEdit(){
+  var val = document.getElementById('editUrl').value.trim();
+  if(val && !/^https?:\/\//i.test(val)) val = 'https://' + val;
+  var links = getLinks();
+  if(val) links[editingId] = val; else delete links[editingId];
+  saveLinks(links);
+  renderPortals();
+  closeEdit();
+}
+renderPortals();
+</script>
+</body>
+</html>
