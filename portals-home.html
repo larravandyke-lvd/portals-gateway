@@ -57,27 +57,27 @@ body.locked .app{display:none}
 #lock{position:fixed;inset:0;background:rgba(18,20,31,.82);z-index:999;display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(2px)}
 body.locked #lock{display:flex}
 .lock-box{width:100%;max-width:300px;text-align:center}
-.lock-icon{font-size:30px;margin-bottom:10px}
-.lock-box h2{font-size:20px;font-weight:600;margin-bottom:4px}
-.lock-box p{font-size:12px;color:var(--ink-dim);margin-bottom:22px}
+.lock-icon{font-size:34.5px;margin-bottom:10px}
+.lock-box h2{font-size:23px;font-weight:600;margin-bottom:4px}
+.lock-box p{font-size:14px;color:var(--ink-dim);margin-bottom:22px}
 .lock-dots{display:flex;gap:10px;justify-content:center;margin-bottom:22px}
 .lock-dot{width:13px;height:13px;border-radius:50%;border:1.5px solid var(--line);background:transparent;transition:all .1s}
 .lock-dot.filled{background:var(--gold);border-color:var(--gold)}
 .lock-dot.err{background:var(--red);border-color:var(--red)}
 .lock-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.lock-key{background:var(--panel2);border:1px solid var(--line);color:var(--ink);font-size:18px;font-weight:600;padding:16px 0;border-radius:14px;cursor:pointer;font-family:Inter,sans-serif}
+.lock-key{background:var(--panel2);border:1px solid var(--line);color:var(--ink);font-size:20.5px;font-weight:600;padding:16px 0;border-radius:14px;cursor:pointer;font-family:Inter,sans-serif}
 .lock-key:active{background:var(--gold-soft);border-color:var(--gold)}
-.lock-key.wide{font-size:12px;color:var(--ink-dim)}
-.lock-err{font-size:12px;color:var(--red);margin-top:14px;min-height:16px}
+.lock-key.wide{font-size:14px;color:var(--ink-dim)}
+.lock-err{font-size:14px;color:var(--red);margin-top:14px;min-height:16px}
 
 /* ── HEADER ── */
 .hdr{text-align:center;padding:14px 0 24px}
 .seal{width:56px;height:56px;border-radius:50%;margin:0 auto 12px;position:relative;background:radial-gradient(circle at 35% 30%,#f3e2b3,#c9a24b 45%,#8a6a3f 85%);box-shadow:0 4px 16px rgba(201,162,75,.35), inset 0 0 0 1px rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center}
 .seal::before{content:'';position:absolute;inset:4px;border-radius:50%;border:1px solid rgba(18,20,31,.35)}
-.seal-mono{font-family:Fraunces,serif;font-weight:700;font-size:16px;color:#1b1207;letter-spacing:-.5px}
-.hdr-eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px}
-.hdr h1{font-size:27px;font-weight:600;letter-spacing:-.3px}
-.hdr p{font-size:12px;color:var(--ink-dim);margin-top:6px;font-style:italic}
+.seal-mono{font-family:Fraunces,serif;font-weight:700;font-size:18.5px;color:#1b1207;letter-spacing:-.5px}
+.hdr-eyebrow{font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px}
+.hdr h1{font-size:31px;font-weight:600;letter-spacing:-.3px}
+.hdr p{font-size:14px;color:var(--ink-dim);margin-top:6px;font-style:italic}
 .hdr-rule{width:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px auto 0}
 
 /* ── PORTAL TILES ── */
@@ -86,14 +86,14 @@ body.locked #lock{display:flex}
 .portal:active{transform:scale(.985)}
 .portal-glow{position:absolute;inset:0;opacity:.5;pointer-events:none}
 .portal-row{display:flex;align-items:center;gap:16px;position:relative}
-.portal-icon{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.portal-icon{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,.25)}
 .portal-body{flex:1;min-width:0}
-.portal-eyebrow{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:2px}
-.portal-name{font-family:Fraunces,serif;font-size:18px;font-weight:600}
-.portal-desc{font-size:12px;color:var(--ink-dim);margin-top:3px;line-height:1.4}
-.portal-arrow{font-size:20px;color:var(--ink-faint);flex-shrink:0}
-.portal-edit{position:absolute;top:14px;right:14px;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--ink-dim);cursor:pointer;z-index:2}
-.portal-unset{font-size:10.5px;color:var(--amber);margin-top:6px;font-weight:600}
+.portal-eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:2px}
+.portal-name{font-family:Fraunces,serif;font-size:20.5px;font-weight:600}
+.portal-desc{font-size:14px;color:var(--ink-dim);margin-top:3px;line-height:1.4}
+.portal-arrow{font-size:23px;color:var(--ink-faint);flex-shrink:0}
+.portal-edit{position:absolute;top:14px;right:14px;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12.5px;color:var(--ink-dim);cursor:pointer;z-index:2}
+.portal-unset{font-size:12px;color:var(--amber);margin-top:6px;font-weight:600}
 
 .portal.travel .portal-icon{background:var(--teal-soft);color:var(--teal)}
 .portal.travel .portal-eyebrow{color:var(--teal)}
@@ -104,18 +104,18 @@ body.locked #lock{display:flex}
 .portal.ai .portal-icon{background:var(--azure-soft);color:var(--azure)}
 .portal.ai .portal-eyebrow{color:var(--azure)}
 
-.footnote{text-align:center;font-size:11px;color:var(--ink-faint);margin-top:26px;line-height:1.6}
+.footnote{text-align:center;font-size:12.5px;color:var(--ink-faint);margin-top:26px;line-height:1.6}
 .footnote span{text-decoration:underline;cursor:pointer;color:var(--ink-dim)}
 
 /* ── EDIT MODAL ── */
 #editOverlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:900;display:none;align-items:flex-end;justify-content:center}
 #editOverlay.open{display:flex}
 .edit-sheet{width:100%;max-width:640px;background:var(--panel);border-radius:20px 20px 0 0;padding:20px;border-top:1px solid var(--line)}
-.edit-sheet h3{font-family:Fraunces,serif;font-size:17px;margin-bottom:4px}
-.edit-sheet p{font-size:11.5px;color:var(--ink-dim);margin-bottom:14px}
-.edit-sheet input{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:12px 14px;border-radius:12px;font-size:13.5px;margin-bottom:12px}
+.edit-sheet h3{font-family:Fraunces,serif;font-size:19.5px;margin-bottom:4px}
+.edit-sheet p{font-size:13px;color:var(--ink-dim);margin-bottom:14px}
+.edit-sheet input{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:12px 14px;border-radius:12px;font-size:15.5px;margin-bottom:12px}
 .edit-actions{display:flex;gap:8px}
-.edit-actions button{flex:1;padding:12px 0;border-radius:12px;font-size:13.5px;font-weight:700;border:1px solid var(--line);background:var(--panel2);color:var(--ink);cursor:pointer;font-family:Inter,sans-serif}
+.edit-actions button{flex:1;padding:12px 0;border-radius:12px;font-size:15.5px;font-weight:700;border:1px solid var(--line);background:var(--panel2);color:var(--ink);cursor:pointer;font-family:Inter,sans-serif}
 .edit-actions button.primary{background:var(--gold);border-color:var(--gold);color:#1b1207}
 </style>
 </head>
@@ -250,10 +250,9 @@ body.locked #lock{display:flex}
 <script>
 // ══════════════════════════════════════════════════════════
 // PIN LOCK — same pattern as the Points Portal.
-// Default PIN is 2727 — tap "Change PIN" below to set your own
-// shared code once (both of you then use the new one).
+// Shared PIN is 1018 (same one used on the Points Portal).
 // ══════════════════════════════════════════════════════════
-var PIN_HASH = localStorage.getItem('vdgw_pin_hash') || '6195df46a1ee6b6984140dc3c3e6d772765010745d6c3f1ddd736ddbbd564cca'; // default: 2727
+var PIN_HASH = localStorage.getItem('vdgw_pin_hash') || '9989a37538faecc495bbe774b30fb447a1582b8f1bc14ac88dfd84996a7b799a'; // default: 1018
 var lockEntry = '';
 async function sha256(str){
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
