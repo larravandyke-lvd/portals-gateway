@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/points.html" }
+    { "source": "/(.*)", "destination": "/portals-home.html" }
   ]
 }
