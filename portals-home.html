@@ -33,9 +33,6 @@ h1,h2,.serif{font-family:Fraunces,Georgia,serif}
 ::selection{background:var(--gold-soft)}
 a{color:inherit;text-decoration:none}
 
-/* ── ARTISTIC BACKDROP · orrery of portals ──
-   One ring per portal, slowly turning around the shared seal —
-   points (gold), travel (teal), AI (azure), estate (rose). */
 #backdrop{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;display:flex;align-items:center;justify-content:center}
 #backdrop svg{width:min(1000px,165vw);height:min(1000px,165vw);opacity:.9}
 .orb-ring{fill:none;stroke-width:1}
@@ -52,7 +49,6 @@ a{color:inherit;text-decoration:none}
 }
 .star{fill:var(--gold);opacity:.5}
 
-/* ── LOCK SCREEN ── */
 body.locked .app{display:none}
 #lock{position:fixed;inset:0;background:rgba(18,20,31,.82);z-index:999;display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(2px)}
 body.locked #lock{display:flex}
@@ -70,7 +66,6 @@ body.locked #lock{display:flex}
 .lock-key.wide{font-size:14px;color:var(--ink-dim)}
 .lock-err{font-size:14px;color:var(--red);margin-top:14px;min-height:16px}
 
-/* ── HEADER ── */
 .hdr{text-align:center;padding:14px 0 24px}
 .seal{width:56px;height:56px;border-radius:50%;margin:0 auto 12px;position:relative;background:radial-gradient(circle at 35% 30%,#f3e2b3,#c9a24b 45%,#8a6a3f 85%);box-shadow:0 4px 16px rgba(201,162,75,.35), inset 0 0 0 1px rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center}
 .seal::before{content:'';position:absolute;inset:4px;border-radius:50%;border:1px solid rgba(18,20,31,.35)}
@@ -80,47 +75,53 @@ body.locked #lock{display:flex}
 .hdr p{font-size:14px;color:var(--ink-dim);margin-top:6px;font-style:italic}
 .hdr-rule{width:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px auto 0}
 
-/* ── PORTAL TILES ── */
-.portals{display:flex;flex-direction:column;gap:14px;margin-top:6px}
-.portal{position:relative;border-radius:20px;padding:20px;border:1px solid var(--line);background:var(--panel);overflow:hidden;cursor:pointer;transition:transform .15s,border-color .15s}
-.portal:active{transform:scale(.985)}
-.portal-glow{position:absolute;inset:0;opacity:.5;pointer-events:none}
-.portal-row{display:flex;align-items:center;gap:16px;position:relative}
-.portal-icon{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,.25)}
-.portal-body{flex:1;min-width:0}
-.portal-eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:2px}
-.portal-name{font-family:Fraunces,serif;font-size:20.5px;font-weight:600}
-.portal-desc{font-size:14px;color:var(--ink-dim);margin-top:3px;line-height:1.4}
-.portal-arrow{font-size:23px;color:var(--ink-faint);flex-shrink:0}
-.portal-edit{position:absolute;top:14px;right:14px;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12.5px;color:var(--ink-dim);cursor:pointer;z-index:2}
-.portal-unset{font-size:12px;color:var(--amber);margin-top:6px;font-weight:600}
+/* ── PORTAL TILES — now a compact grid, not full-width rows ── */
+.portals{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:6px}
+@media (min-width:520px){ .portals{grid-template-columns:repeat(3,1fr);} }
+.portal{
+  position:relative;border-radius:18px;padding:16px 14px;border:1px solid var(--line);
+  background:var(--panel);overflow:hidden;cursor:pointer;transition:transform .15s,border-color .15s;
+  display:flex;flex-direction:column;justify-content:space-between;min-height:150px;
+}
+.portal:active{transform:scale(.97)}
+.portal-icon{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,.22);margin-bottom:10px}
+.portal-eyebrow{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:2px}
+.portal-name{font-family:Fraunces,serif;font-size:16px;font-weight:600;line-height:1.15}
+.portal-desc{font-size:11.5px;color:var(--ink-dim);margin-top:4px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.portal-arrow{position:absolute;bottom:14px;right:14px;font-size:16px;color:var(--ink-faint)}
+.portal-edit{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--ink-dim);cursor:pointer;z-index:2}
+.portal-unset{font-size:10.5px;color:var(--amber);margin-top:4px;font-weight:600}
 
-.portal.travel .portal-icon{background:var(--teal-soft);color:var(--teal)}
-.portal.travel .portal-eyebrow{color:var(--teal)}
-.portal.points .portal-icon{background:var(--gold-soft);color:var(--gold)}
-.portal.points .portal-eyebrow{color:var(--gold)}
-.portal.estate .portal-icon{background:var(--rose-soft);color:var(--rose)}
-.portal.estate .portal-eyebrow{color:var(--rose)}
-.portal.ai .portal-icon{background:var(--azure-soft);color:var(--azure)}
-.portal.ai .portal-eyebrow{color:var(--azure)}
-.portal.photog .portal-icon{background:var(--green-soft);color:var(--green)}
-.portal.photog .portal-eyebrow{color:var(--green)}
-.portal.watchlist .portal-icon{background:var(--amber-soft);color:var(--amber)}
-.portal.watchlist .portal-eyebrow{color:var(--amber)}
+.portal-add{
+  align-items:center;justify-content:center;text-align:center;gap:6px;
+  background:transparent;border:1.5px dashed var(--line);color:var(--ink-dim);font-weight:600;font-size:13px;
+}
+.portal-add:hover{border-color:var(--gold);color:var(--gold)}
+.portal-add .plus{font-size:26px;line-height:1;font-weight:400}
 
 .footnote{text-align:center;font-size:12.5px;color:var(--ink-faint);margin-top:26px;line-height:1.6}
 .footnote span{text-decoration:underline;cursor:pointer;color:var(--ink-dim)}
 
-/* ── EDIT MODAL ── */
+/* ── EDIT / ADD MODAL ── */
 #editOverlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:900;display:none;align-items:flex-end;justify-content:center}
 #editOverlay.open{display:flex}
-.edit-sheet{width:100%;max-width:640px;background:var(--panel);border-radius:20px 20px 0 0;padding:20px;border-top:1px solid var(--line)}
+.edit-sheet{width:100%;max-width:640px;max-height:88vh;overflow-y:auto;background:var(--panel);border-radius:20px 20px 0 0;padding:20px;border-top:1px solid var(--line)}
 .edit-sheet h3{font-family:Fraunces,serif;font-size:19.5px;margin-bottom:4px}
-.edit-sheet p{font-size:13px;color:var(--ink-dim);margin-bottom:14px}
-.edit-sheet input{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:12px 14px;border-radius:12px;font-size:15.5px;margin-bottom:12px}
-.edit-actions{display:flex;gap:8px}
+.edit-sheet p.sub{font-size:13px;color:var(--ink-dim);margin-bottom:14px}
+.edit-sheet label{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);margin:12px 0 5px}
+.edit-sheet input,.edit-sheet textarea{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:12px 14px;border-radius:12px;font-size:15px;font-family:Inter,sans-serif}
+.edit-sheet textarea{resize:vertical;min-height:60px}
+.icon-name-row{display:flex;gap:10px}
+.icon-name-row .icon-col{width:70px;flex-shrink:0}
+.icon-name-row .icon-col input{text-align:center;font-size:22px;padding:10px 0}
+.swatch-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:4px}
+.swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent}
+.swatch.selected{border-color:#fff;box-shadow:0 0 0 2px rgba(0,0,0,.4)}
+.edit-actions{display:flex;gap:8px;margin-top:18px}
 .edit-actions button{flex:1;padding:12px 0;border-radius:12px;font-size:15.5px;font-weight:700;border:1px solid var(--line);background:var(--panel2);color:var(--ink);cursor:pointer;font-family:Inter,sans-serif}
 .edit-actions button.primary{background:var(--gold);border-color:var(--gold);color:#1b1207}
+.edit-danger{margin-top:14px;text-align:center}
+.edit-danger button{background:none;border:none;color:var(--red);font-size:13px;cursor:pointer;text-decoration:underline;font-family:Inter,sans-serif}
 </style>
 </head>
 <body class="locked">
@@ -138,14 +139,8 @@ body.locked #lock{display:flex}
     </filter>
   </defs>
   <circle cx="400" cy="400" r="380" fill="url(#vignette)"/>
-
-  <!-- static outer compass ring with ticks -->
   <circle class="orb-ring" cx="400" cy="400" r="372" stroke="#c9a24b" stroke-opacity=".4" stroke-width="1.2"/>
-  <g stroke="#c9a24b" stroke-opacity=".55" stroke-width="1.2">
-    <g id="ticks"></g>
-  </g>
-
-  <!-- star scatter -->
+  <g stroke="#c9a24b" stroke-opacity=".55" stroke-width="1.2"><g id="ticks"></g></g>
   <g>
     <circle class="star" cx="120" cy="90" r="1.8"/><circle class="star" cx="640" cy="70" r="1.4"/>
     <circle class="star" cx="60" cy="300" r="1.6"/><circle class="star" cx="730" cy="260" r="1.8"/>
@@ -156,8 +151,6 @@ body.locked #lock{display:flex}
     <circle class="star" cx="250" cy="150" r="1.3"/><circle class="star" cx="540" cy="160" r="1.3"/>
     <circle class="star" cx="160" cy="650" r="1.3"/><circle class="star" cx="620" cy="670" r="1.3"/>
   </g>
-
-  <!-- orbit rings — one per portal -->
   <g class="orb-group orb-spin-1">
     <circle class="orb-ring" cx="400" cy="400" r="150" stroke="#c9a24b" stroke-opacity=".65" stroke-width="1.4" stroke-dasharray="1 7"/>
     <circle cx="550" cy="400" r="7" fill="#c9a24b" filter="url(#glow)"/>
@@ -224,17 +217,42 @@ body.locked #lock{display:flex}
 <div id="editOverlay">
   <div class="edit-sheet">
     <h3 id="editTitle">Set link</h3>
-    <p id="editSub">Paste the deployed URL for this portal.</p>
+    <p class="sub" id="editSub">Paste the deployed URL for this portal.</p>
+
+    <div class="icon-name-row">
+      <div class="icon-col">
+        <label>Icon</label>
+        <input id="editIcon" placeholder="🔗" maxlength="4">
+      </div>
+      <div style="flex:1">
+        <label>Name</label>
+        <input id="editName" placeholder="Portal name">
+      </div>
+    </div>
+
+    <label>Eyebrow label</label>
+    <input id="editEyebrow" placeholder="e.g. Watchlist Portal">
+
+    <label>Description</label>
+    <textarea id="editDesc" placeholder="One line about what this is for"></textarea>
+
+    <label>Color</label>
+    <div class="swatch-row" id="swatchRow"></div>
+
+    <label>URL</label>
     <input id="editUrl" placeholder="https://…" autocapitalize="off" autocorrect="off" spellcheck="false">
+
     <div class="edit-actions">
       <button onclick="closeEdit()">Cancel</button>
       <button class="primary" onclick="saveEdit()">Save</button>
+    </div>
+    <div class="edit-danger" id="deleteWrap" style="display:none">
+      <button onclick="deletePortal()">Remove this portal</button>
     </div>
   </div>
 </div>
 
 <script>
-// ── draw the 24 compass ticks on the backdrop ring ──
 (function(){
   var g = document.getElementById('ticks');
   if(!g) return;
@@ -253,8 +271,7 @@ body.locked #lock{display:flex}
 </script>
 <script>
 // ══════════════════════════════════════════════════════════
-// PIN LOCK — same pattern as the Points Portal.
-// Shared PIN is 1018 (same one used on the Points Portal).
+// PIN LOCK
 // ══════════════════════════════════════════════════════════
 var PIN_HASH = localStorage.getItem('vdgw_pin_hash') || '9989a37538faecc495bbe774b30fb447a1582b8f1bc14ac88dfd84996a7b799a'; // default: 1018
 var lockEntry = '';
@@ -315,16 +332,19 @@ if(localStorage.getItem('vdgw_unlocked')==='1'){ unlockApp(); }
 else { document.body.classList.add('locked'); }
 
 // ══════════════════════════════════════════════════════════
-// PORTAL LINKS — stored locally so this works before you've
-// told me the real deployed URLs. Tap a tile to set/open it.
+// PORTALS — built-in ones plus any you add from the UI.
+// Everything (icon/name/desc/color/link) is editable, and new
+// portals persist in this browser's localStorage.
 // ══════════════════════════════════════════════════════════
-var PORTALS = [
-  {id:'travel', icon:'✈️', name:'Travel', eyebrow:'Trip Dashboard', desc:'Vegas, Alaska & the Danube — itineraries, packing, people, points.'},
-  {id:'points', icon:'💳', name:'Points', eyebrow:'Rewards Portal', desc:'Cards, balances, specials, redemption strategy.'},
-  {id:'estate', icon:'🏛️', name:'Estate', eyebrow:'Estate Portal', desc:'Estate planning & documents.'},
-  {id:'ai', icon:'📈', name:'AI', eyebrow:'AI Portal', desc:'Your AI workspace.'},
-  {id:'photog', icon:'📷', name:'PopPop\'s Collection', eyebrow:'Equipment Sales Portal', desc:'Catalog, research, and list PopPop\'s camera gear for sale.'},
-  {id:'watchlist', icon:'🍿', name:'What to Watch', eyebrow:'Watchlist Portal', desc:'CVD movie & TV tracker — what we\'re watching, want to watch, and already have.'}
+var ACCENTS = ['#2ba89a','#c9a24b','#b76e79','#4c7fd1','#34a574','#e0a93e','#8b7fd1','#d9614f'];
+
+var BUILTIN_PORTALS = [
+  {id:'travel', icon:'✈️', name:'Travel', eyebrow:'Trip Dashboard', desc:'Vegas, Alaska & the Danube — itineraries, packing, people, points.', accent:'#2ba89a'},
+  {id:'points', icon:'💳', name:'Points', eyebrow:'Rewards Portal', desc:'Cards, balances, specials, redemption strategy.', accent:'#c9a24b'},
+  {id:'estate', icon:'🏛️', name:'Estate', eyebrow:'Estate Portal', desc:'Estate planning & documents.', accent:'#b76e79'},
+  {id:'ai', icon:'📈', name:'AI', eyebrow:'AI Portal', desc:'Your AI workspace.', accent:'#4c7fd1'},
+  {id:'photog', icon:'📷', name:"PopPop's Collection", eyebrow:'Equipment Sales Portal', desc:"Catalog, research, and list PopPop's camera gear for sale.", accent:'#34a574'},
+  {id:'watchlist', icon:'🍿', name:'What to Watch', eyebrow:'Watchlist Portal', desc:"CVD movie & TV tracker — what we're watching, want to watch, and already have.", accent:'#e0a93e'}
 ];
 var DEFAULT_LINKS = {
   travel: 'https://vandyke-travel-app.vercel.app',
@@ -334,60 +354,166 @@ var DEFAULT_LINKS = {
   photog: 'https://poppop-photog.vercel.app',
   watchlist: 'https://what-to-watch-five-delta.vercel.app'
 };
+
 function getLinks(){
   var stored = {};
   try{ stored = JSON.parse(localStorage.getItem('vdgw_links')||'{}'); }catch(e){}
   return Object.assign({}, DEFAULT_LINKS, stored);
 }
 function saveLinks(l){ localStorage.setItem('vdgw_links', JSON.stringify(l)); }
-var editingId = null;
+
+function getCustomPortals(){
+  try{ return JSON.parse(localStorage.getItem('vdgw_custom_portals')||'[]'); }catch(e){ return []; }
+}
+function saveCustomPortals(list){ localStorage.setItem('vdgw_custom_portals', JSON.stringify(list)); }
+
+function getOverrides(){
+  try{ return JSON.parse(localStorage.getItem('vdgw_overrides')||'{}'); }catch(e){ return {}; }
+}
+function saveOverrides(o){ localStorage.setItem('vdgw_overrides', JSON.stringify(o)); }
+
+function getAllPortals(){
+  var overrides = getOverrides();
+  var builtin = BUILTIN_PORTALS.map(function(p){ return Object.assign({}, p, overrides[p.id] || {}); });
+  return builtin.concat(getCustomPortals());
+}
+
+function hexToSoft(hex, alpha){
+  hex = (hex||'#c9a24b').replace('#','');
+  var r=parseInt(hex.substring(0,2),16), g=parseInt(hex.substring(2,4),16), b=parseInt(hex.substring(4,6),16);
+  return 'rgba('+r+','+g+','+b+','+(alpha||0.14)+')';
+}
+
 function renderPortals(){
   var links = getLinks();
+  var all = getAllPortals();
   var wrap = document.getElementById('portalList');
-  wrap.innerHTML = PORTALS.map(function(p){
+  wrap.innerHTML = all.map(function(p){
     var url = links[p.id] || '';
-    return '<div class="portal ' + p.id + '" onclick="tapPortal(\'' + p.id + '\')">'
+    var soft = hexToSoft(p.accent);
+    return '<div class="portal" onclick="tapPortal(\'' + p.id + '\')">'
       + '<div class="portal-edit" onclick="event.stopPropagation();openEdit(\'' + p.id + '\')">✎</div>'
-      + '<div class="portal-row">'
-      + '<div class="portal-icon">' + p.icon + '</div>'
-      + '<div class="portal-body">'
-      + '<div class="portal-eyebrow">' + p.eyebrow + '</div>'
+      + '<div>'
+      + '<div class="portal-icon" style="background:' + soft + ';color:' + p.accent + '">' + p.icon + '</div>'
+      + '<div class="portal-eyebrow" style="color:' + p.accent + '">' + p.eyebrow + '</div>'
       + '<div class="portal-name">' + p.name + '</div>'
       + '<div class="portal-desc">' + p.desc + '</div>'
-      + (url ? '' : '<div class="portal-unset">Not linked yet — tap to set the URL</div>')
+      + (url ? '' : '<div class="portal-unset">Not linked — tap to set URL</div>')
       + '</div>'
       + (url ? '<div class="portal-arrow">→</div>' : '')
-      + '</div></div>';
-  }).join('');
+      + '</div>';
+  }).join('') + '<div class="portal portal-add" onclick="openAdd()"><span class="plus">+</span>Add a portal</div>';
 }
+
 function tapPortal(id){
   var links = getLinks();
   var url = links[id];
   if(url){ window.location.href = url; }
   else { openEdit(id); }
 }
-function openEdit(id){
-  editingId = id;
-  var p = PORTALS.find(function(x){ return x.id === id; });
-  var links = getLinks();
-  document.getElementById('editTitle').textContent = 'Set link — ' + p.name;
-  document.getElementById('editSub').textContent = 'Paste the deployed URL for the ' + p.name + ' portal.';
-  document.getElementById('editUrl').value = links[id] || '';
+
+var editingId = null;
+var editingIsNew = false;
+var selectedAccent = ACCENTS[0];
+
+function renderSwatches(){
+  var row = document.getElementById('swatchRow');
+  row.innerHTML = ACCENTS.map(function(c){
+    return '<div class="swatch' + (c === selectedAccent ? ' selected' : '') + '" style="background:' + c + '" onclick="pickAccent(\'' + c + '\')"></div>';
+  }).join('');
+}
+function pickAccent(c){ selectedAccent = c; renderSwatches(); }
+
+function openAdd(){
+  editingId = null;
+  editingIsNew = true;
+  document.getElementById('editTitle').textContent = 'Add a portal';
+  document.getElementById('editSub').textContent = 'Create a new tile for something you access often.';
+  document.getElementById('editIcon').value = '🔗';
+  document.getElementById('editName').value = '';
+  document.getElementById('editEyebrow').value = '';
+  document.getElementById('editDesc').value = '';
+  document.getElementById('editUrl').value = '';
+  selectedAccent = ACCENTS[Math.floor(Math.random()*ACCENTS.length)];
+  renderSwatches();
+  document.getElementById('deleteWrap').style.display = 'none';
   document.getElementById('editOverlay').classList.add('open');
 }
+
+function openEdit(id){
+  editingId = id;
+  editingIsNew = false;
+  var p = getAllPortals().find(function(x){ return x.id === id; });
+  if(!p) return;
+  var links = getLinks();
+  document.getElementById('editTitle').textContent = 'Edit — ' + p.name;
+  document.getElementById('editSub').textContent = "Update this portal's details or link.";
+  document.getElementById('editIcon').value = p.icon;
+  document.getElementById('editName').value = p.name;
+  document.getElementById('editEyebrow').value = p.eyebrow;
+  document.getElementById('editDesc').value = p.desc;
+  document.getElementById('editUrl').value = links[id] || '';
+  selectedAccent = p.accent;
+  renderSwatches();
+  document.getElementById('deleteWrap').style.display = id.indexOf('custom-') === 0 ? 'block' : 'none';
+  document.getElementById('editOverlay').classList.add('open');
+}
+
 function closeEdit(){
   document.getElementById('editOverlay').classList.remove('open');
   editingId = null;
+  editingIsNew = false;
 }
+
 function saveEdit(){
+  var icon = document.getElementById('editIcon').value.trim() || '🔗';
+  var name = document.getElementById('editName').value.trim() || 'Untitled';
+  var eyebrow = document.getElementById('editEyebrow').value.trim() || 'Portal';
+  var desc = document.getElementById('editDesc').value.trim();
   var val = document.getElementById('editUrl').value.trim();
   if(val && !/^https?:\/\//i.test(val)) val = 'https://' + val;
+
   var links = getLinks();
-  if(val) links[editingId] = val; else delete links[editingId];
+
+  if(editingIsNew){
+    var id = 'custom-' + Date.now();
+    var customs = getCustomPortals();
+    customs.push({id:id, icon:icon, name:name, eyebrow:eyebrow, desc:desc, accent:selectedAccent});
+    saveCustomPortals(customs);
+    if(val) links[id] = val;
+  } else if(editingId) {
+    var isCustom = editingId.indexOf('custom-') === 0;
+    if(isCustom){
+      var customs2 = getCustomPortals();
+      var idx = customs2.findIndex(function(x){ return x.id === editingId; });
+      if(idx > -1){
+        customs2[idx] = {id:editingId, icon:icon, name:name, eyebrow:eyebrow, desc:desc, accent:selectedAccent};
+        saveCustomPortals(customs2);
+      }
+    } else {
+      var overrides = getOverrides();
+      overrides[editingId] = {icon:icon, name:name, eyebrow:eyebrow, desc:desc, accent:selectedAccent};
+      saveOverrides(overrides);
+    }
+    if(val) links[editingId] = val; else delete links[editingId];
+  }
   saveLinks(links);
   renderPortals();
   closeEdit();
 }
+
+function deletePortal(){
+  if(!editingId || editingId.indexOf('custom-') !== 0) return;
+  if(!confirm('Remove this portal? This only removes it from this browser — do the same on the other device if needed.')) return;
+  var customs = getCustomPortals().filter(function(x){ return x.id !== editingId; });
+  saveCustomPortals(customs);
+  var links = getLinks();
+  delete links[editingId];
+  saveLinks(links);
+  renderPortals();
+  closeEdit();
+}
+
 renderPortals();
 </script>
 </body>
