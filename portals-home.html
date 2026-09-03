@@ -18,7 +18,7 @@
   --teal:#2ba89a; --teal-soft:rgba(43,168,154,.14);
   --rose:#b76e79; --rose-soft:rgba(183,110,121,.14);
   --azure:#4c7fd1; --azure-soft:rgba(76,127,209,.14);
-  --green:#34a574; --green-soft:rgba(52,165,116,.14); --amber:#e0a93e; --red:#d9614f;
+  --green:#34a574; --green-soft:rgba(52,165,116,.14); --amber:#e0a93e; --amber-soft:rgba(224,169,62,.14); --red:#d9614f;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
@@ -105,6 +105,8 @@ body.locked #lock{display:flex}
 .portal.ai .portal-eyebrow{color:var(--azure)}
 .portal.photog .portal-icon{background:var(--green-soft);color:var(--green)}
 .portal.photog .portal-eyebrow{color:var(--green)}
+.portal.watchlist .portal-icon{background:var(--amber-soft);color:var(--amber)}
+.portal.watchlist .portal-eyebrow{color:var(--amber)}
 
 .footnote{text-align:center;font-size:12.5px;color:var(--ink-faint);margin-top:26px;line-height:1.6}
 .footnote span{text-decoration:underline;cursor:pointer;color:var(--ink-dim)}
@@ -321,14 +323,16 @@ var PORTALS = [
   {id:'points', icon:'💳', name:'Points', eyebrow:'Rewards Portal', desc:'Cards, balances, specials, redemption strategy.'},
   {id:'estate', icon:'🏛️', name:'Estate', eyebrow:'Estate Portal', desc:'Estate planning & documents.'},
   {id:'ai', icon:'📈', name:'AI', eyebrow:'AI Portal', desc:'Your AI workspace.'},
-  {id:'photog', icon:'📷', name:'PopPop\'s Collection', eyebrow:'Equipment Sales Portal', desc:'Catalog, research, and list PopPop\'s camera gear for sale.'}
+  {id:'photog', icon:'📷', name:'PopPop\'s Collection', eyebrow:'Equipment Sales Portal', desc:'Catalog, research, and list PopPop\'s camera gear for sale.'},
+  {id:'watchlist', icon:'🍿', name:'What to Watch', eyebrow:'Watchlist Portal', desc:'CVD movie & TV tracker — what we\'re watching, want to watch, and already have.'}
 ];
 var DEFAULT_LINKS = {
   travel: 'https://vandyke-travel-app.vercel.app',
   points: 'https://van-dyke-points.vercel.app',
   ai: 'https://ai-stocks-dashboard-sage.vercel.app',
   estate: 'https://estate-dashboard-mu.vercel.app',
-  photog: 'https://poppop-photog.vercel.app'
+  photog: 'https://poppop-photog.vercel.app',
+  watchlist: 'https://what-to-watch-five-delta.vercel.app'
 };
 function getLinks(){
   var stored = {};
