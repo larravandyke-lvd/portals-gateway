@@ -408,7 +408,7 @@ function renderPortals(){
 function tapPortal(id){
   var links = getLinks();
   var url = links[id];
-  if(url){ window.location.href = url; }
+  if(url){ window.open(url, '_blank'); }
   else { openEdit(id); }
 }
 
